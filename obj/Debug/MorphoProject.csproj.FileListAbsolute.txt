@@ -1,0 +1,5 @@
+C:\Users\Alexandra\source\repos\morphogenetic project\MorphoProject\MorphoProject\bin\MorphoProject.dll
+C:\Users\Alexandra\source\repos\morphogenetic project\MorphoProject\MorphoProject\bin\MorphoProject.pdb
+C:\Users\Alexandra\source\repos\morphogenetic project\MorphoProject\MorphoProject\obj\Debug\MorphoProject.csprojAssemblyReference.cache
+C:\Users\Alexandra\source\repos\morphogenetic project\MorphoProject\MorphoProject\obj\Debug\MorphoProject.dll
+C:\Users\Alexandra\source\repos\morphogenetic project\MorphoProject\MorphoProject\obj\Debug\MorphoProject.pdb
