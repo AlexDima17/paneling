@@ -28,7 +28,7 @@ namespace MorphoProject
             pManager.AddNumberParameter("radius", "r", "sphere radius", GH_ParamAccess.item);
             pManager.AddNumberParameter("startHeight", "h", "height to start division from", GH_ParamAccess.item);           
             pManager.AddMeshParameter("inputMesh", "m", "input a mesh", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("num", "n", "height to start division from", GH_ParamAccess.item);
+         //   pManager.AddIntegerParameter("num", "n", "height to start division from", GH_ParamAccess.item);
         }
 
 
@@ -37,6 +37,8 @@ namespace MorphoProject
 
             pManager.AddCurveParameter("Line", "ln", "intersection curve", GH_ParamAccess.item);
             pManager.AddCurveParameter("intersections", "inters", "intersection curves", GH_ParamAccess.list);
+            pManager.AddCurveParameter("intersectionsNext", "interNext", "intersection curves", GH_ParamAccess.list);
+            pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
 
         }
 
@@ -47,7 +49,7 @@ namespace MorphoProject
             double startHeight = radius;
             Mesh inputMesh = new Mesh();
             Polyline intersectionLine;
-            List<Polyline> sphInters;
+            List<PolylineCurve> sphInters;
             int num=1;
 
             // Then we need to access the input parameters individually. 
@@ -55,16 +57,19 @@ namespace MorphoProject
             if (!DA.GetData(0, ref radius)) return;
             if (!DA.GetData(1, ref startHeight)) return;
             if (!DA.GetData(2, ref inputMesh)) return;
-            if (!DA.GetData(3, ref num)) return;
+           // if (!DA.GetData(3, ref num)) return;
 
             SpherePacking sphPacking = new SpherePacking(radius, inputMesh, startHeight,num);
 
-            intersectionLine = sphPacking.intersectionLine;
-            sphInters = sphPacking.sphInters;
-
+            intersectionLine = sphPacking.path;
+            sphInters = sphPacking.sphIntersFirst;
+            var inter2 = sphPacking.sphIntersNext;
+            var pts = sphPacking.centers;
 
             DA.SetData(0, intersectionLine);
             DA.SetDataList(1, sphInters);
+            DA.SetDataList(2, inter2);
+            DA.SetDataList(3, pts[1]);
         }
 
        
