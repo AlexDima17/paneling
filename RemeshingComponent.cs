@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Grasshopper.Kernel;
+using MorphoProject.Properties;
 using Rhino.Geometry;
 using Rhino.Geometry.Intersect;
 
@@ -28,16 +29,17 @@ namespace MorphoProject
             pManager.AddNumberParameter("radius", "r", "sphere radius", GH_ParamAccess.item);
             pManager.AddNumberParameter("startHeight", "h", "height to start division from", GH_ParamAccess.item);           
             pManager.AddMeshParameter("inputMesh", "m", "input a mesh", GH_ParamAccess.item);
-         //   pManager.AddIntegerParameter("num", "n", "height to start division from", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("reps", "n", "repetitions", GH_ParamAccess.item);
         }
 
 
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-
             pManager.AddCurveParameter("Line", "ln", "intersection curve", GH_ParamAccess.item);
             pManager.AddCurveParameter("intersections", "inters", "intersection curves", GH_ParamAccess.list);
             pManager.AddCurveParameter("intersectionsNext", "interNext", "intersection curves", GH_ParamAccess.list);
+            pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
+            pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
             pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
 
         }
@@ -50,29 +52,43 @@ namespace MorphoProject
             Mesh inputMesh = new Mesh();
             Polyline intersectionLine;
             List<PolylineCurve> sphInters;
-            int num=1;
+            List<PolylineCurve> allInter=new List<PolylineCurve>();
+            int reps=1;
 
-            // Then we need to access the input parameters individually. 
-            // When data cannot be extracted from a parameter, we should abort this method.
-            if (!DA.GetData(0, ref radius)) return;
-            if (!DA.GetData(1, ref startHeight)) return;
+          
+            if (!DA.GetData(0, ref radius)) radius=0.2;
+            if (!DA.GetData(1, ref startHeight)) startHeight=0.2;
             if (!DA.GetData(2, ref inputMesh)) return;
-           // if (!DA.GetData(3, ref num)) return;
+            if (!DA.GetData(3, ref reps)) return;
 
-            SpherePacking sphPacking = new SpherePacking(radius, inputMesh, startHeight,num);
+            SpherePacking sphPacking = new SpherePacking(radius, inputMesh, startHeight,reps);
 
             intersectionLine = sphPacking.path;
-            sphInters = sphPacking.sphIntersFirst;
-            var inter2 = sphPacking.sphIntersNext;
+            sphInters = sphPacking.sphIntersCurrent;
+            var inter2 = sphPacking.intersectionsList;
             var pts = sphPacking.centers;
+
+            //make the list of lists a single list
+            for (int i = 0; i < inter2.Count; i++)
+            {
+                for (int j = 0; j < inter2[i].Count; j++)
+                {
+                    allInter.Add(inter2[i][j]);
+                }
+
+            }
 
             DA.SetData(0, intersectionLine);
             DA.SetDataList(1, sphInters);
-            DA.SetDataList(2, inter2);
-            DA.SetDataList(3, pts[1]);
+            DA.SetDataList(2, allInter);
+            DA.SetDataList(3, pts[0]);
+            DA.SetDataList(4, pts[1]);
+            DA.SetDataList(5, pts[2]);
+
+
         }
 
-       
+
         public override GH_Exposure Exposure
         {
             get { return GH_Exposure.primary; }
@@ -83,7 +99,7 @@ namespace MorphoProject
             get
             {
                 // You can add image files to your project resources and access them like this:
-                //return Resources.IconForThisComponent;
+                return Resources.icon1_01;
                 return null;
             }
         }

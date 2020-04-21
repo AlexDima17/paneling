@@ -5,6 +5,7 @@ C:\Users\Alexandra\source\repos\morphogenetic project\MorphoProject\MorphoProjec
 C:\Users\Alexandra\source\repos\morphogenetic project\MorphoProject\MorphoProject\obj\Debug\MorphoProject.pdb
 C:\Users\Alexandra\source\repos\paneling-morpho\paneling\bin\MorphoProject.dll
 C:\Users\Alexandra\source\repos\paneling-morpho\paneling\bin\MorphoProject.pdb
-C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject.csprojAssemblyReference.cache
 C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject.dll
 C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject.pdb
+C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject.Properties.Resources.resources
+C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject.csproj.GenerateResource.cache
