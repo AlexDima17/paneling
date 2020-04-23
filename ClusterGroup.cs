@@ -11,9 +11,9 @@ namespace MorphoProject
     {
         public int K;
         public Cluster[] centroids;
-        hexPanel[] inputs;
+        quadPanel[] inputs;
 
-        public ClusterGroup(int K, hexPanel[] inputs)
+        public ClusterGroup(int K, quadPanel[] inputs)
         {
             this.K = K;
             var rnd = new Random();
@@ -22,15 +22,17 @@ namespace MorphoProject
             for (int i = 0; i < centroids.Length; i++)
             {
                 Point3d pt = new Point3d(1.0 * rnd.NextDouble(), 1.0 * rnd.NextDouble(), 0);
-                centroids[i] = new Cluster(pt);
+
+                int randomIndex = rnd.Next(centroids.Length);
+                centroids[i] = new Cluster(inputs[randomIndex]);
             }
 
             this.inputs = inputs;
         }
 
-        public List<Point3d> DrawClusterPts()
+        public List<quadPanel> DrawClusters()
         {
-            List<Point3d> pts = new List<Point3d>();
+            List<quadPanel> pts = new List<quadPanel>();
             for (int i = 0; i < centroids.Length; i++)
             {
                 pts.Add(centroids[i].centroid);
@@ -71,9 +73,9 @@ namespace MorphoProject
 
         }
 
-        public static double Distance(Cluster cluster, hexPanel input)
+        public static double Distance(Cluster cluster, quadPanel input)
         {
-            double d = Math.Pow(cluster.curvatureVec.X - input.weight, 2);
+            double d = Math.Pow(cluster.centroidVec.X - input.weight, 2);
               //+ Math.Pow(cluster.curvatureVec.Y - input.color.G, 2)
               //+ Math.Pow(cluster.curvatureVec.Z - input.color.B, 2);
 

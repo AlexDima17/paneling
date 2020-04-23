@@ -9,3 +9,6 @@ C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject
 C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject.pdb
 C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject.Properties.Resources.resources
 C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject.csproj.GenerateResource.cache
+C:\Users\Alexandra\source\repos\paneling-morpho\paneling\bin\Plankton.dll
+C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject.csprojAssemblyReference.cache
+C:\Users\Alexandra\source\repos\paneling-morpho\paneling\obj\Debug\MorphoProject.csproj.CopyComplete

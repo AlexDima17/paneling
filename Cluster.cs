@@ -7,18 +7,19 @@ using Rhino.Geometry;
 
 namespace MorphoProject
 {
+    
     class Cluster
     {
-        public Point3d centroid;
-        public List<hexPanel> assignedInputs;
+        public quadPanel centroid;
+        public List<quadPanel> assignedInputs;
         public List<Point3d> assignedPts;
-        public Vector3d curvatureVec;
+        public Vector3d centroidVec;
 
-        public Cluster(Point3d pt)
+        public Cluster(quadPanel centroid)
         {
-            this.centroid = pt;
-            this.curvatureVec = new Vector3d(new Random().NextDouble(),0,0);
-            this.assignedInputs = new List<hexPanel>();
+            this.centroid = centroid;
+            this.centroidVec = new Vector3d(centroid.weight,0,0);
+            this.assignedInputs = new List<quadPanel>();
             this.assignedPts = new List<Point3d>();
         }
 
@@ -28,12 +29,11 @@ namespace MorphoProject
 
             for (int i = 0; i < assignedInputs.Count; i++)
             {
-                value += assignedInputs[i].weight;
-              
+                value += assignedInputs[i].weight;              
             }
 
             value /= assignedInputs.Count;
-            curvatureVec = new Vector3d(value,0,0);
+            centroidVec = new Vector3d(value,0,0);
         }
 
     }
