@@ -17,16 +17,16 @@ namespace MorphoProject
         public quadPanel(Point3d[] pts)
         {
             this.pts = pts;
-            mesh = CreatePanel();
-            ComputeCurvature();
-            weight = curvature;
+            mesh = CreatePanel();            
+            weight = ComputeCurvature(); 
+          //  curvature = 2;
         }
 
         public quadPanel(Mesh mesh)
         {
             this. mesh = mesh;
-            ComputeCurvature();
-            weight = curvature;
+            weight = ComputeCurvature();
+            //   curvature = 2;
         }
 
         private Mesh CreatePanel()
@@ -52,11 +52,11 @@ namespace MorphoProject
             return mesh;
         }
 
-        public void ComputeCurvature()
+        public double ComputeCurvature()
         {
             double angle = 0.0;
             Vector3d centerVec =new Vector3d(mesh.Vertices[4].X, mesh.Vertices[4].Y, mesh.Vertices[4].Z);
-
+           
             for (int i = 0; i < mesh.Vertices.Count-1; i++)
             {
                 int nxt = (mesh.Vertices.Count + i + 1) % mesh.Vertices.Count;
@@ -65,6 +65,7 @@ namespace MorphoProject
                 angle += Math.Abs(Vector3d.VectorAngle(vec1, vec2));
             }
             curvature = Math.Abs((angle - 2 * Math.PI) * 360 / (2 * Math.PI));
+            return curvature;
         }
 
 

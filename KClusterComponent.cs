@@ -22,6 +22,7 @@ namespace MorphoProject
         bool reset, run;
         List<Mesh> meshPanels = new List<Mesh>();
         int k = 1;
+        int played = 0;
 
         quadPanel[] qPans; //the inputs
         ClusterGroup clusterGroup;
@@ -58,6 +59,8 @@ namespace MorphoProject
             if (!DA.GetData(0, ref run)) return;
             if (!DA.GetData(1, ref reset)) return;
             if (!DA.GetData(2, ref maxCounter)) return;
+            if (!DA.GetDataList(3, meshPanels)) return;
+            if (!DA.GetData(4, ref k)) return;
 
             if (timer == null)
             {
@@ -78,21 +81,28 @@ namespace MorphoProject
             }
 
 
-          
-            if (!DA.GetDataList(3, meshPanels)) return;
-            if (!DA.GetData(4, ref k)) return;
-           
-            // if (!DA.GetData(2, ref meshPoints)) return;
-
 
            // DA.SetDataList(0,clusterGroup.centroids[0].assignedPts);
-            DA.SetData(0, counter);
+            DA.SetData(0, played);
         }
 
 
         public void Start()
         {
+            played = -100;
+            qPans = new quadPanel[meshPanels.Count];
+
+            for (int i = 0; i < meshPanels.Count; i++)
+            {
+                quadPanel qPan = new quadPanel(meshPanels[i]);
+                qPans[i] = qPan;
+            }
+
+            clusterGroup = new ClusterGroup(k, qPans);
+            clusterGroup.AssignClusters();
+
             timer.Start();
+
         }
         public void Stop()
         {
@@ -100,23 +110,16 @@ namespace MorphoProject
         }
         public void Reset()
         {
+            played = -100;
             counter = 0;
         }
         public void Update()
         {
             // DoSomethingEpic 
 
-            //qPans = new quadPanel[meshPanels.Count];
 
-            //for (int i = 0; i < meshPanels.Count; i++)
-            //{
-            //    quadPanel qPan = new quadPanel(meshPanels[i]);
-            //    qPans[i] = qPan;
-            //}
-
-            //clusterGroup = new ClusterGroup(k, qPans);
-
-            //clusterGroup.UpdateClusters();
+            played++;
+            clusterGroup.UpdateClusters();
 
             counter++;
         }
