@@ -40,8 +40,7 @@ namespace MorphoProject
             pManager.AddCurveParameter("intersectionsNext", "interNext", "intersection curves", GH_ParamAccess.list);
             pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
             pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
-            pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
-
+            pManager.AddMeshParameter("mesh panels", "mPan", "mesh panels", GH_ParamAccess.list);
         }
 
 
@@ -54,6 +53,7 @@ namespace MorphoProject
             List<PolylineCurve> sphInters;
             List<PolylineCurve> allInter=new List<PolylineCurve>();
             int reps=1;
+            List<Mesh> qPanels = new List<Mesh>();
 
           
             if (!DA.GetData(0, ref radius)) radius=0.2;
@@ -78,14 +78,18 @@ namespace MorphoProject
 
             }
 
+            for (int i = 0; i < sphPacking.groupsOfFive.Count; i++)
+            {
+                quadPanel qP = new quadPanel(sphPacking.groupsOfFive[i]);
+                qPanels.Add(qP.mesh);
+            }
+
             DA.SetData(0, intersectionLine);
             DA.SetDataList(1, sphInters);
             DA.SetDataList(2, allInter);
-            DA.SetDataList(3,sphPacking.groupsOfFive);
+            DA.SetDataList(3,sphPacking.groupsOfFive[sphPacking.groupsOfFive.Count-1]);
             DA.SetDataList(4, sphPacking.groupsOfFive[1]);
-            DA.SetDataList(5, pts[2]);
-
-
+            DA.SetDataList(5, qPanels);
         }
 
 

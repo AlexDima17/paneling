@@ -11,7 +11,7 @@ namespace MorphoProject
     class quadPanel
     {
         Point3d[] pts;
-        Mesh mesh;
+        public Mesh mesh;
         public double weight; //the weight will be the curvature(?)
         public double curvature;
         public quadPanel(Point3d[] pts)
@@ -44,10 +44,12 @@ namespace MorphoProject
             //  | / \ |
             //  0_____3
 
-            mesh.Faces.AddFace(0, 1, 4);
-            mesh.Faces.AddFace(1, 2, 4);
-            mesh.Faces.AddFace(2, 3, 4);
-            mesh.Faces.AddFace(3, 0, 4);
+            //mesh.Faces.AddFace(0, 1, 4);
+            //mesh.Faces.AddFace(1, 2, 4);
+            //mesh.Faces.AddFace(2, 3, 4);
+            //mesh.Faces.AddFace(3, 0, 4);
+
+            mesh.Faces.AddFace(0, 1,2, 3);
 
             return mesh;
         }

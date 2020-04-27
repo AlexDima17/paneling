@@ -17,7 +17,7 @@ namespace MorphoProject
         public List<PolylineCurve> sphIntersNext;
         public List<List<PolylineCurve>> intersectionsList;
         public List<List<Point3d>> centers;
-        public List<List<Point3d>> groupsOfFive; //List of points in a structure to create panels
+        public List<Point3d[]> groupsOfFive; //List of points in a structure to create panels
         public SpherePacking(double radius, Mesh mesh, double startHeight, int rep)
         {
             this.radius = radius;
@@ -39,21 +39,21 @@ namespace MorphoProject
 
         private void GroupForPanels()
         {
-            groupsOfFive = new List<List<Point3d>>();
+            groupsOfFive = new List<Point3d[]>();
             int num = centers.Count - 2; //rows to run through
 
             for (int i = 0; i < num; i++) 
             {
                 for (int j = 0; j < centers[i].Count; j++)
                 {
-                    List<Point3d> fivePts = new List<Point3d>();
+                    Point3d[] fivePts = new Point3d[5];
                     int nxt = (j + 1 + centers[i].Count) % centers[i].Count;
 
-                    fivePts.Add(centers[i][j]);
-                    fivePts.Add(centers[i + 2][j]);
-                    fivePts.Add(centers[i][nxt]);
-                    fivePts.Add(centers[i + 2][nxt]);
-                    fivePts.Add(centers[i + 1][j]);
+                    fivePts[0]= centers[i][j];
+                    fivePts[1] = centers[i + 2][j];
+                    fivePts[2] = centers[i + 2][nxt];
+                    fivePts[3] = centers[i][nxt];
+                    fivePts[4] = centers[i + 1][j];
 
                     groupsOfFive.Add(fivePts);
                 }
