@@ -17,21 +17,47 @@ namespace MorphoProject
         public List<PolylineCurve> sphIntersNext;
         public List<List<PolylineCurve>> intersectionsList;
         public List<List<Point3d>> centers;
+        public List<List<Point3d>> groupsOfFive; //List of points in a structure to create panels
         public SpherePacking(double radius, Mesh mesh, double startHeight, int rep)
         {
             this.radius = radius;
             this.mesh = mesh;
-            this.centers = new List<List<Point3d>>();
-            this.intersectionsList = new List<List<PolylineCurve>>();
+            centers = new List<List<Point3d>>();
+            intersectionsList = new List<List<PolylineCurve>>();
             path = InitialPath(startHeight);
             sphIntersCurrent = SphIntersectionsFirstRow();
             intersectionsList.Add(sphIntersCurrent);
-            
 
             for (int i = 0; i < rep; i++)
             {
-                sphIntersNext = SphIntersections(intersectionsList[intersectionsList.Count-1]);
-                intersectionsList.Add(sphIntersNext);               
+                sphIntersNext = SphIntersections(intersectionsList[intersectionsList.Count - 1]);
+                intersectionsList.Add(sphIntersNext);
+            }
+
+            GroupForPanels();
+        }
+
+        private void GroupForPanels()
+        {
+            groupsOfFive = new List<List<Point3d>>();
+            int num = centers.Count - 2; //rows to run through
+
+            for (int i = 0; i < num; i++) 
+            {
+                for (int j = 0; j < centers[i].Count; j++)
+                {
+                    List<Point3d> fivePts = new List<Point3d>();
+                    int nxt = (j + 1 + centers[i].Count) % centers[i].Count;
+
+                    fivePts.Add(centers[i][j]);
+                    fivePts.Add(centers[i + 2][j]);
+                    fivePts.Add(centers[i][nxt]);
+                    fivePts.Add(centers[i + 2][nxt]);
+                    fivePts.Add(centers[i + 1][j]);
+
+                    groupsOfFive.Add(fivePts);
+                }
+               
             }
         }
 
@@ -51,7 +77,7 @@ namespace MorphoProject
 
             for (int i = 0; i < previousRow.Count; i++)
             {
-                int next = (i + previousRow.Count+1) % previousRow.Count;
+                int next = (i + previousRow.Count + 1) % previousRow.Count;
 
                 Curve pl1 = previousRow[i];
                 Curve pl2 = previousRow[next];
@@ -59,9 +85,9 @@ namespace MorphoProject
 
                 //THIS IS THE REASON IT CRASHES \/
                 Point3d pA = curveIntersection[0].PointA;
-                Point3d pB = curveIntersection[curveIntersection.Count-1].PointA;
+                Point3d pB = curveIntersection[curveIntersection.Count - 1].PointA;
 
-                if(pA.Z>pB.Z)
+                if (pA.Z > pB.Z)
                 {
                     subCenters.Add(pA);
                 }
@@ -70,7 +96,7 @@ namespace MorphoProject
                     subCenters.Add(pB);
                 }
 
-                Sphere sph = new Sphere(subCenters[subCenters.Count-1], radius);
+                Sphere sph = new Sphere(subCenters[subCenters.Count - 1], radius);
                 var sphM = Mesh.CreateFromSphere(sph, 10, 10);
                 Polyline[] intersectionLines = Intersection.MeshMeshAccurate(mesh, sphM, 0.0);
 
@@ -87,36 +113,45 @@ namespace MorphoProject
         {
             List<PolylineCurve> meshSphereInterPlns = new List<PolylineCurve>();
             List<Point3d> subCenters = new List<Point3d>();//intersections between spheres on a single row
-            int numOfSpheres =(int) (path.Length/radius)+2; //how many spheres along the path
+            int numOfSpheres = (int)(path.Length / radius) + 2; //how many spheres along the path
             Point3d center = path.PointAt(0);
             Point3d prevCenter = path.PointAt(0);
             int iter = 0;
-          
+            Vector3d vec1;
+            Vector3d vec2;
+            Vector3d vec3;
+
             for (int i = 0; i < numOfSpheres; i++)
             {
                 subCenters.Add(center);
                 Sphere sph = new Sphere(center, radius);
                 var sphM = Mesh.CreateFromSphere(sph, 15, 15); //sphere mesh I will use for intersections
-               
+                Polyline[] intersectSphPath = Intersection.MeshMeshAccurate(mesh, sphM, 0.0); //intersection of sphere with the mesh
+
                 //intersection points of sphere with path that will be be the next center
+
                 Point3d[] sphOnPathPts = Intersection.MeshPolyline(sphM, path.ToPolylineCurve(), out int[] fIDs);
-                var vec1 = Vector3d.Subtract((Vector3d)center, (Vector3d)prevCenter);
-                var vec2 = Vector3d.Subtract((Vector3d)sphOnPathPts[0], (Vector3d)center);
-                var vec3 = Vector3d.Subtract((Vector3d)sphOnPathPts[1], (Vector3d)center);
+               
+                vec1 = Vector3d.Subtract((Vector3d)center, (Vector3d)prevCenter);
+                vec2 = Vector3d.Subtract((Vector3d)sphOnPathPts[0], (Vector3d)center);
+                vec3 = Vector3d.Subtract((Vector3d)sphOnPathPts[1], (Vector3d)center);
 
                 prevCenter = center;
                 if (Vector3d.Multiply(vec1, vec2) > Vector3d.Multiply(vec1, vec3))
                 {
+                    // center = sphOnPathPts[0];
                     center = sphOnPathPts[0];
                 }
                 else
                 {
+                    //center = sphOnPathPts[1];
                     center = sphOnPathPts[1];
+
                 }
 
                 Polyline[] intersectionLines = Intersection.MeshMeshAccurate(mesh, sphM, 0.0);
                 iter++;
-                meshSphereInterPlns.Add(intersectionLines[0].ToPolylineCurve());
+                meshSphereInterPlns.Add(intersectSphPath[0].ToPolylineCurve());
 
             }
 

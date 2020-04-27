@@ -81,8 +81,8 @@ namespace MorphoProject
             DA.SetData(0, intersectionLine);
             DA.SetDataList(1, sphInters);
             DA.SetDataList(2, allInter);
-            DA.SetDataList(3, pts[0]);
-            DA.SetDataList(4, pts[1]);
+            DA.SetDataList(3,sphPacking.groupsOfFive);
+            DA.SetDataList(4, sphPacking.groupsOfFive[1]);
             DA.SetDataList(5, pts[2]);
 
 
