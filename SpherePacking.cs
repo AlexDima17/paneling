@@ -42,16 +42,18 @@ namespace MorphoProject
             groupsOfFive = new List<Point3d[]>();
             int num = centers.Count - 2; //rows to run through
 
-            for (int i = 0; i < num; i++) 
+            for (int i = 0; i < num; i+=2) 
             {
                 for (int j = 0; j < centers[i].Count; j++)
                 {
                     Point3d[] fivePts = new Point3d[5];
                     int nxt = (j + 1 + centers[i].Count) % centers[i].Count;
+                    int pre = (j - 1 + centers[i].Count) % centers[i].Count;
+
 
                     fivePts[0]= centers[i][j];
-                    fivePts[1] = centers[i + 2][j];
-                    fivePts[2] = centers[i + 2][nxt];
+                    fivePts[1] = centers[i + 2][pre]; //j
+                    fivePts[2] = centers[i + 2][j];   //nxt
                     fivePts[3] = centers[i][nxt];
                     fivePts[4] = centers[i + 1][j];
 

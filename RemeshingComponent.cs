@@ -38,9 +38,10 @@ namespace MorphoProject
             pManager.AddCurveParameter("Line", "ln", "intersection curve", GH_ParamAccess.item);
             pManager.AddCurveParameter("intersections", "inters", "intersection curves", GH_ParamAccess.list);
             pManager.AddCurveParameter("intersectionsNext", "interNext", "intersection curves", GH_ParamAccess.list);
-            pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
-            pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
+            //pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
+            //pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
             pManager.AddMeshParameter("mesh panels", "mPan", "mesh panels", GH_ParamAccess.list);
+            pManager.AddNumberParameter("curvatures", "curv", "panel curvature", GH_ParamAccess.list);
         }
 
 
@@ -54,7 +55,7 @@ namespace MorphoProject
             List<PolylineCurve> allInter=new List<PolylineCurve>();
             int reps=1;
             List<Mesh> qPanels = new List<Mesh>();
-
+            List<double> curvatures = new List<double>();
           
             if (!DA.GetData(0, ref radius)) radius=0.2;
             if (!DA.GetData(1, ref startHeight)) startHeight=0.2;
@@ -82,14 +83,17 @@ namespace MorphoProject
             {
                 quadPanel qP = new quadPanel(sphPacking.groupsOfFive[i]);
                 qPanels.Add(qP.mesh);
+                curvatures.Add(qP.weight);
             }
 
             DA.SetData(0, intersectionLine);
             DA.SetDataList(1, sphInters);
-            DA.SetDataList(2, allInter);
-            DA.SetDataList(3,sphPacking.groupsOfFive[sphPacking.groupsOfFive.Count-1]);
-            DA.SetDataList(4, sphPacking.groupsOfFive[1]);
-            DA.SetDataList(5, qPanels);
+            DA.SetDataList(2, allInter);        
+            DA.SetDataList(3, qPanels);
+            DA.SetDataList(4, curvatures);
+
+            //DA.SetDataList(3, sphPacking.groupsOfFive[sphPacking.groupsOfFive.Count - 1]);
+            //DA.SetDataList(4, sphPacking.groupsOfFive[1]);
         }
 
 

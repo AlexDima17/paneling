@@ -17,14 +17,14 @@ namespace MorphoProject
         public quadPanel(Point3d[] pts)
         {
             this.pts = pts;
-            mesh = CreatePanel();            
-            weight = ComputeCurvature(); 
-          //  curvature = 2;
+            mesh = CreatePanel();
+            weight = ComputeCurvature();
+            //  curvature = 2;
         }
 
         public quadPanel(Mesh mesh)
         {
-            this. mesh = mesh;
+            this.mesh = mesh;
             weight = ComputeCurvature();
             //   curvature = 2;
         }
@@ -49,25 +49,45 @@ namespace MorphoProject
             //mesh.Faces.AddFace(2, 3, 4);
             //mesh.Faces.AddFace(3, 0, 4);
 
-            mesh.Faces.AddFace(0, 1,2, 3);
+            mesh.Faces.AddFace(0, 1, 2, 3);
 
             return mesh;
         }
 
         public double ComputeCurvature()
         {
-            double angle = 0.0;
-            Vector3d centerVec =new Vector3d(mesh.Vertices[4].X, mesh.Vertices[4].Y, mesh.Vertices[4].Z);
-           
-            for (int i = 0; i < mesh.Vertices.Count-1; i++)
-            {
-                int nxt = (mesh.Vertices.Count + i + 1) % mesh.Vertices.Count;
-                Vector3d vec1 = Vector3d.Subtract(new Vector3d(mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z), centerVec);
-                Vector3d vec2 = Vector3d.Subtract(new Vector3d(mesh.Vertices[nxt].X, mesh.Vertices[nxt].Y, mesh.Vertices[nxt].Z), centerVec);
-                angle += Math.Abs(Vector3d.VectorAngle(vec1, vec2));
-            }
+
+            //represent the panel edges with vectors
+            Vector3d vec1 = Vector3d.Subtract(new Vector3d(mesh.Vertices[0].X, mesh.Vertices[0].Y, mesh.Vertices[0].Z),
+                new Vector3d(mesh.Vertices[1].X, mesh.Vertices[1].Y, mesh.Vertices[1].Z));
+
+            Vector3d vec2 = Vector3d.Subtract(new Vector3d(mesh.Vertices[1].X, mesh.Vertices[1].Y, mesh.Vertices[1].Z),
+                new Vector3d(mesh.Vertices[2].X, mesh.Vertices[2].Y, mesh.Vertices[2].Z));
+
+            Vector3d vec3 = Vector3d.Subtract(new Vector3d(mesh.Vertices[2].X, mesh.Vertices[2].Y, mesh.Vertices[2].Z),
+            new Vector3d(mesh.Vertices[3].X, mesh.Vertices[3].Y, mesh.Vertices[3].Z));
+
+            Vector3d vec4 = Vector3d.Subtract(new Vector3d(mesh.Vertices[0].X, mesh.Vertices[0].Y, mesh.Vertices[0].Z),
+            new Vector3d(mesh.Vertices[3].X, mesh.Vertices[3].Y, mesh.Vertices[3].Z));
+
+            double angle = Math.Abs(Vector3d.VectorAngle(vec1, vec2)) + Math.Abs(Vector3d.VectorAngle(vec2, vec3))
+                + Math.Abs(Vector3d.VectorAngle(vec3, vec4)) + Math.Abs(Vector3d.VectorAngle(vec4, vec1));
+                       
             curvature = Math.Abs((angle - 2 * Math.PI) * 360 / (2 * Math.PI));
             return curvature;
+
+            //double angle = 0.0;
+            //Vector3d centerVec = new Vector3d(mesh.Vertices[4].X, mesh.Vertices[4].Y, mesh.Vertices[4].Z);
+
+            //for (int i = 0; i < mesh.Vertices.Count - 1; i++)
+            //{
+            //    int nxt = (mesh.Vertices.Count + i + 1) % mesh.Vertices.Count;
+            //    Vector3d vec1 = Vector3d.Subtract(new Vector3d(mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z), centerVec);
+            //    Vector3d vec2 = Vector3d.Subtract(new Vector3d(mesh.Vertices[nxt].X, mesh.Vertices[nxt].Y, mesh.Vertices[nxt].Z), centerVec);
+            //    angle += Math.Abs(Vector3d.VectorAngle(vec1, vec2));
+            //}
+            //curvature = Math.Abs((angle - 2 * Math.PI) * 360 / (2 * Math.PI));
+            //return curvature;
         }
 
 
