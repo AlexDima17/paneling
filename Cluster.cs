@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using Rhino.Geometry;
 
 namespace MorphoProject
-{
-    
+{    
     class Cluster
     {
         public quadPanel centroid;
         public List<quadPanel> assignedInputs;
         public List<Point3d> assignedPts;
+        public List<Mesh> assignedMeshes;
         public Vector3d centroidVec;
 
         public Cluster(quadPanel centroid)
@@ -21,6 +21,7 @@ namespace MorphoProject
             this.centroidVec = new Vector3d(centroid.weight,0,0);
             this.assignedInputs = new List<quadPanel>();
             this.assignedPts = new List<Point3d>();
+            this.assignedMeshes = new List<Mesh>();
         }
 
         public void MeanVector()

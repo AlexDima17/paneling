@@ -12,18 +12,14 @@ namespace MorphoProject
         public int K;
         public Cluster[] centroids;
         quadPanel[] inputs;
-        public int[] wtf;
-        int b;
-        int c;
-
+      
         public ClusterGroup(int K, quadPanel[] inputs)
         {
             this.K = K;
             Random rnd = new Random();
 
             centroids = new Cluster[K];
-            wtf = new int[4];        
-
+           
             for (int i = 0; i < centroids.Length; i++)
             {
                 Point3d pt = new Point3d(1.0 * rnd.NextDouble(), 1.0 * rnd.NextDouble(), 0);
@@ -33,8 +29,8 @@ namespace MorphoProject
             }
             this.inputs = inputs;
 
-             c = wtf.Length;
-             b = centroids.Length;
+            //assign inputs to clusters for first time
+            AssignClusters();
         }
 
         public List<quadPanel> DrawClusters()
@@ -49,7 +45,15 @@ namespace MorphoProject
 
         public void AssignClusters()
         {
-            var a = centroids.Length;
+            //clear the assigned inputs lists
+            for (int i = 0; i < centroids.Length; i++)
+            {
+                centroids[i].assignedInputs = new List<quadPanel>();
+                centroids[i].assignedMeshes = new List<Mesh>();
+
+                // centroids[i].assignedPts.Clear();
+            }
+
             for (int i = 0; i < inputs.Length; i++)
             {
                 double minDist = double.MaxValue;
@@ -58,7 +62,7 @@ namespace MorphoProject
                 for (int j = 0; j < centroids.Length; j++)
                 {
                     double d = Distance(centroids[j], inputs[i]);
-                    bool foundnewmin = d < minDist;
+
                     if (d < minDist)
                     {
                         minDist = d;
@@ -67,7 +71,7 @@ namespace MorphoProject
                 }
 
                 centroids[winner].assignedInputs.Add(inputs[i]);
-               // centroids[winner].assignedPts.Add(inputs[i].pt);
+                centroids[winner].assignedMeshes.Add(inputs[i].mesh);
             }
         }
 
@@ -90,14 +94,14 @@ namespace MorphoProject
             double d = Math.Pow(cluster.centroidVec.X - input.weight, 2);
             //+ Math.Pow(cluster.curvatureVec.Y - input.color.G, 2)
             //+ Math.Pow(cluster.curvatureVec.Z - input.color.B, 2);
-            return g;
+           // return g;
             return Math.Sqrt(d);
         }
 
     }
 
 }
-  
+
 
 
 
