@@ -132,7 +132,6 @@ namespace MorphoProject
             qPans = new quadPanel[meshPanels.Count];
             curv = new List<double>();
 
-            var iii = 2;
             for (int i = 0; i < meshPanels.Count; i++)
             {
                 quadPanel qPan = new quadPanel(meshPanels[i]);
@@ -167,7 +166,7 @@ namespace MorphoProject
                 }
                 ///////////////////
 
-                meshTree.Clear();
+                meshTree = new Grasshopper.DataTree<Mesh>();
                 for (int i = 0; i < k; i++)
                 {
                     GH_Path pth = new GH_Path(i);
