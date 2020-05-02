@@ -52,12 +52,7 @@ namespace MorphoProject
             //  pManager.AddCurveParameter("Line", "ln", "intersection curve", GH_ParamAccess.item);
             pManager.AddIntegerParameter("count", "c", "intersection curves", GH_ParamAccess.item);
             pManager.AddMeshParameter("meshes", "mP", "mesh panels", GH_ParamAccess.tree);
-          //  pManager.AddIntegerParameter("ints", "i", "integers", GH_ParamAccess.tree);
-            pManager.AddMeshParameter("mmmeshes", "m", "mesh panels", GH_ParamAccess.list);
-
-            pManager.AddMeshParameter("mmmeshes", "m", "mesh panels", GH_ParamAccess.list);
-            pManager.AddNumberParameter("curvature", "cr", "list curvatures", GH_ParamAccess.list);
-
+          
         }
 
 
@@ -92,14 +87,9 @@ namespace MorphoProject
                 Stop();
             }
 
-           
 
-            // DA.SetDataList(0,clusterGroup.centroids[0].assignedPts);
             DA.SetData(0, played);
-            DA.SetDataTree(1, meshTree);
-            DA.SetDataList(2, clusterGroup.centroids[0].assignedMeshes);
-            DA.SetDataList(3, clusterGroup.centroids[1].assignedMeshes);
-            DA.SetDataList(4, curv);
+            DA.SetDataTree(1, meshTree);           
         }
 
 
@@ -115,11 +105,8 @@ namespace MorphoProject
                 qPans[i] = qPan;
                 curv.Add(qPan.weight);
             }
-            /////\ till up here probably ok /\
-            
-
-            clusterGroup = new ClusterGroup(k, qPans);
            
+            clusterGroup = new ClusterGroup(k, qPans);           
             timer.Start();
         }
         public void Stop()
@@ -195,8 +182,7 @@ namespace MorphoProject
             get
             {
                 // You can add image files to your project resources and access them like this:
-                return Resources.Image1;
-                return null;
+                return Resources.Image1;               
             }
         }
 

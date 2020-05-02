@@ -12,20 +12,21 @@ namespace MorphoProject
     {
         Point3d[] pts;
         public Mesh mesh;
-        public double weight; //the weight will be the curvature(?)
-        public double curvature;
+        public double[] weights; //weights will be curvature, the dimensions and the diagonal of the panel
+   
         public quadPanel(Point3d[] pts)
         {
             this.pts = pts;
             mesh = CreatePanel();
-            weight = ComputeCurvature();
+            ComputeWeights();
             //  curvature = 2;
         }
 
         public quadPanel(Mesh mesh)
         {
             this.mesh = mesh;
-            weight = ComputeCurvature();
+            weights = new double[4];
+            ComputeWeights();
             //   curvature = 2;
         }
 
@@ -54,7 +55,7 @@ namespace MorphoProject
             return mesh;
         }
 
-        public double ComputeCurvature()
+        public void ComputeWeights()
         {
 
             //represent the panel edges with vectors
@@ -73,21 +74,12 @@ namespace MorphoProject
             double angle = Math.Abs(Vector3d.VectorAngle(vec1, vec2)) + Math.Abs(Vector3d.VectorAngle(vec2, vec3))
                 + Math.Abs(Vector3d.VectorAngle(vec3, vec4)) + Math.Abs(Vector3d.VectorAngle(vec4, vec1));
                        
-            curvature = Math.Abs((angle - 2 * Math.PI) * 360 / (2 * Math.PI));
-            return curvature;
-
-            //double angle = 0.0;
-            //Vector3d centerVec = new Vector3d(mesh.Vertices[4].X, mesh.Vertices[4].Y, mesh.Vertices[4].Z);
-
-            //for (int i = 0; i < mesh.Vertices.Count - 1; i++)
-            //{
-            //    int nxt = (mesh.Vertices.Count + i + 1) % mesh.Vertices.Count;
-            //    Vector3d vec1 = Vector3d.Subtract(new Vector3d(mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z), centerVec);
-            //    Vector3d vec2 = Vector3d.Subtract(new Vector3d(mesh.Vertices[nxt].X, mesh.Vertices[nxt].Y, mesh.Vertices[nxt].Z), centerVec);
-            //    angle += Math.Abs(Vector3d.VectorAngle(vec1, vec2));
-            //}
-            //curvature = Math.Abs((angle - 2 * Math.PI) * 360 / (2 * Math.PI));
-            //return curvature;
+           //set weights
+            weights[0] = Math.Abs((angle - 2 * Math.PI) * 360 / (2 * Math.PI)); //gaussian curvature
+            weights[1] = vec1.Length; //dimension 1
+            weights[2] = vec2.Length; //dimension 2
+            weights[3] = Vector3d.Subtract(vec1, vec2).Length; //one of the diagonals
+            
         }
 
 
@@ -109,5 +101,19 @@ namespace MorphoProject
 
         //    return mesh;
         //}
+
+        ///////////////////GAUSIAN CURVATURE WITH VERTEX IN THE MIDDLE OF PANEL////////////////////
+        //double angle = 0.0;
+        //Vector3d centerVec = new Vector3d(mesh.Vertices[4].X, mesh.Vertices[4].Y, mesh.Vertices[4].Z);
+
+        //for (int i = 0; i < mesh.Vertices.Count - 1; i++)
+        //{
+        //    int nxt = (mesh.Vertices.Count + i + 1) % mesh.Vertices.Count;
+        //    Vector3d vec1 = Vector3d.Subtract(new Vector3d(mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z), centerVec);
+        //    Vector3d vec2 = Vector3d.Subtract(new Vector3d(mesh.Vertices[nxt].X, mesh.Vertices[nxt].Y, mesh.Vertices[nxt].Z), centerVec);
+        //    angle += Math.Abs(Vector3d.VectorAngle(vec1, vec2));
+        //}
+        //curvature = Math.Abs((angle - 2 * Math.PI) * 360 / (2 * Math.PI));
+        //return curvature;
     }
 }

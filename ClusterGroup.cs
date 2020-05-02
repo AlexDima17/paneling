@@ -54,6 +54,7 @@ namespace MorphoProject
                 // centroids[i].assignedPts.Clear();
             }
 
+            //find the best matching centroid for each input to be assigned to
             for (int i = 0; i < inputs.Length; i++)
             {
                 double minDist = double.MaxValue;
@@ -79,22 +80,29 @@ namespace MorphoProject
         {
             for (int i = 0; i < centroids.Length; i++)
             {
-                centroids[i].MeanVector();
+                //update the weights of the centroid and re-assign
+                centroids[i].MeanVector(); 
                 AssignClusters();
             }
 
         }
 
-        //WHY THE DISTANCE IS NOT UPDATED?
-
         public double Distance(Cluster cluster, quadPanel input)
         {
-            var f = input.curvature;
-            var g = 2;
-            double d = Math.Pow(cluster.centroidVec.X - input.weight, 2);
+            //euclidean distance between centroid weights and input weights
+
+            double d = 0.0;
+
+            for (int i = 0; i < cluster.centroidWeights.Length; i++)
+            {
+                d += Math.Pow(cluster.centroidWeights[i] - input.weights[i], 2);
+            }
+
+
+            //double d = Math.Pow(cluster.centroidVec.X - input.weight, 2);
             //+ Math.Pow(cluster.curvatureVec.Y - input.color.G, 2)
             //+ Math.Pow(cluster.curvatureVec.Z - input.color.B, 2);
-           // return g;
+           
             return Math.Sqrt(d);
         }
 
