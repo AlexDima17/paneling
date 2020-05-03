@@ -83,7 +83,7 @@ namespace MorphoProject
             {
                 quadPanel qP = new quadPanel(sphPacking.groupsOfFive[i]);
                 qPanels.Add(qP.mesh);
-                curvatures.Add(qP.weight);
+                curvatures.Add(qP.weights[0]);
             }
 
             DA.SetData(0, intersectionLine);
@@ -108,7 +108,6 @@ namespace MorphoProject
             {
                 // You can add image files to your project resources and access them like this:
                 return Resources.icon1_01;
-                return null;
             }
         }
 

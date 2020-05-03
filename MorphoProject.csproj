@@ -59,8 +59,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cluster.cs" />
-    <Compile Include="ClusterGroup.cs" />
+    <Compile Include="KCluster.cs" />
+    <Compile Include="KClusterGroup.cs" />
+    <Compile Include="HCluster.cs" />
+    <Compile Include="HClusterGroup.cs" />
     <Compile Include="quadPanel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -7,25 +7,25 @@ using Rhino.Geometry;
 
 namespace MorphoProject
 {
-    class ClusterGroup
+    class KClusterGroup
     {
         public int K;
-        public Cluster[] centroids;
+        public KCluster[] centroids;
         quadPanel[] inputs;
       
-        public ClusterGroup(int K, quadPanel[] inputs)
+        public KClusterGroup(int K, quadPanel[] inputs)
         {
             this.K = K;
             Random rnd = new Random();
 
-            centroids = new Cluster[K];
+            centroids = new KCluster[K];
            
             for (int i = 0; i < centroids.Length; i++)
             {
                 Point3d pt = new Point3d(1.0 * rnd.NextDouble(), 1.0 * rnd.NextDouble(), 0);
 
                 int randomIndex = rnd.Next(centroids.Length);
-                centroids[i] = new Cluster(inputs[randomIndex]);
+                centroids[i] = new KCluster(inputs[randomIndex]);
             }
             this.inputs = inputs;
 
@@ -87,7 +87,7 @@ namespace MorphoProject
 
         }
 
-        public double Distance(Cluster cluster, quadPanel input)
+        public double Distance(KCluster cluster, quadPanel input)
         {
             //euclidean distance between centroid weights and input weights
 

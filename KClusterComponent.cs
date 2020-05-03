@@ -24,7 +24,7 @@ namespace MorphoProject
         int played = 0;
 
         quadPanel[] qPans; //the inputs
-        ClusterGroup clusterGroup;
+        KClusterGroup clusterGroup;
         Grasshopper.DataTree<Mesh> meshTree = new Grasshopper.DataTree<Mesh>();
         Grasshopper.DataTree<int> myTree = new Grasshopper.DataTree<int>();
         List<double> curv=new List<double>();
@@ -103,10 +103,10 @@ namespace MorphoProject
             {
                 quadPanel qPan = new quadPanel(meshPanels[i]);
                 qPans[i] = qPan;
-                curv.Add(qPan.weight);
+                curv.Add(qPan.weights[0]);
             }
            
-            clusterGroup = new ClusterGroup(k, qPans);           
+            clusterGroup = new KClusterGroup(k, qPans);           
             timer.Start();
         }
         public void Stop()
@@ -124,11 +124,11 @@ namespace MorphoProject
                 quadPanel qPan = new quadPanel(meshPanels[i]);
                 qPans[i] = qPan;
 
-                curv.Add(qPan.weight);
+                curv.Add(qPan.weights[0]);
 
             }
 
-            clusterGroup = new ClusterGroup(k, qPans);
+            clusterGroup = new KClusterGroup(k, qPans);
            
             counter = 0;
         }

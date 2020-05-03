@@ -13,11 +13,13 @@ namespace MorphoProject
         Point3d[] pts;
         public Mesh mesh;
         public double[] weights; //weights will be curvature, the dimensions and the diagonal of the panel
-   
+
         public quadPanel(Point3d[] pts)
         {
             this.pts = pts;
             mesh = CreatePanel();
+            weights = new double[4];
+
             ComputeWeights();
             //  curvature = 2;
         }
@@ -73,13 +75,13 @@ namespace MorphoProject
 
             double angle = Math.Abs(Vector3d.VectorAngle(vec1, vec2)) + Math.Abs(Vector3d.VectorAngle(vec2, vec3))
                 + Math.Abs(Vector3d.VectorAngle(vec3, vec4)) + Math.Abs(Vector3d.VectorAngle(vec4, vec1));
-                       
-           //set weights
-            weights[0] = Math.Abs((angle - 2 * Math.PI) * 360 / (2 * Math.PI)); //gaussian curvature
+
+            //set weights
+            weights[0] = Math.Abs((angle - 2 * Math.PI) * 360 / (2 * Math.PI)); //gaussian curvature          
             weights[1] = vec1.Length; //dimension 1
             weights[2] = vec2.Length; //dimension 2
             weights[3] = Vector3d.Subtract(vec1, vec2).Length; //one of the diagonals
-            
+
         }
 
 

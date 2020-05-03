@@ -7,7 +7,7 @@ using Rhino.Geometry;
 
 namespace MorphoProject
 {
-    class Cluster
+    class KCluster
     {
         public quadPanel centroid;
         public List<quadPanel> assignedInputs;
@@ -16,10 +16,10 @@ namespace MorphoProject
         public Vector3d centroidVec;
         public double[] centroidWeights;
 
-        public Cluster(quadPanel centroid)
+        public KCluster(quadPanel centroid)
         {
             this.centroid = centroid;
-            centroidVec = new Vector3d(centroid.weight, 0, 0);
+            centroidVec = new Vector3d(centroid.weights[0], 0, 0);
             assignedInputs = new List<quadPanel>();
             assignedPts = new List<Point3d>();
             assignedMeshes = new List<Mesh>();
@@ -40,7 +40,7 @@ namespace MorphoProject
             //and assign them to the cluster centroid
             for (int i = 0; i < assignedInputs.Count; i++)
             {
-                value += assignedInputs[i].weight;
+                value += assignedInputs[i].weights[0];
                 for (int j = 0; j < centroidWeights.Length; j++)
                 {
                     centroidWeights[j] += assignedInputs[i].weights[j];
