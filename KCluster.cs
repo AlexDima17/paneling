@@ -28,7 +28,7 @@ namespace MorphoProject
 
         public void MeanVector()
         {
-            double value = 0.0;
+            double value = 0.0; //i am not using this value further on
 
             //set all the weights of cluster to 0
             for (int i = 0; i < centroidWeights.Length; i++)

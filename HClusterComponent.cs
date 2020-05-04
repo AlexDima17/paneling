@@ -12,26 +12,25 @@ namespace MorphoProject
 
     //pick k random panels from the input list
     //these panels will be the "centroids"
-    public class KClusterComponent : GH_Component
+    public class HClusterComponent : GH_Component
     {
         Timer timer;
         int counter;
         int maxCounter;
-        int interval;
         bool reset, run;
         List<Mesh> meshPanels = new List<Mesh>();
         int k = 1;
         int played = 0;
 
         quadPanel[] qPans; //the inputs
-        KClusterGroup clusterGroup;
+        HClusterGroup clusterGroup;
         Grasshopper.DataTree<Mesh> meshTree = new Grasshopper.DataTree<Mesh>();
         Grasshopper.DataTree<int> myTree = new Grasshopper.DataTree<int>();
         List<double> curv=new List<double>();
         int iter = 0;
 
-        public KClusterComponent()
-          : base("ClusterPanelsK", "KCluster", "Group input panels", "PanelizationTools", "PanelizationTools")
+        public HClusterComponent()
+          : base("ClusterPanelsHierachical", "HCluster", "Group input panels", "PanelizationTools", "PanelizationTools")
         {
         }
 
@@ -68,7 +67,7 @@ namespace MorphoProject
             if (timer == null)
             {
                 timer = new Timer();
-                timer.Interval = 1000;
+                timer.Interval = 500;
                 timer.Tick += UpdateSolution;
             }
 
@@ -105,8 +104,8 @@ namespace MorphoProject
                 qPans[i] = qPan;
                 curv.Add(qPan.weights[0]);
             }
-           
-            clusterGroup = new KClusterGroup(k, qPans);           
+
+            clusterGroup = new HClusterGroup(qPans);
             timer.Start();
         }
         public void Stop()
@@ -116,6 +115,8 @@ namespace MorphoProject
         public void Reset()
         {            
             played = -100;
+            counter = 0;
+
             qPans = new quadPanel[meshPanels.Count];
             curv = new List<double>();
 
@@ -128,14 +129,14 @@ namespace MorphoProject
 
             }
 
-            clusterGroup = new KClusterGroup(k, qPans);
-           
-            counter = 0;
+            clusterGroup = new HClusterGroup(qPans);
+
+
         }
         public void Update()
-        {
-            played++;
+        {   
             clusterGroup.UpdateClusters();
+            played++;
             counter++;
 
             if (counter == maxCounter)
@@ -152,17 +153,18 @@ namespace MorphoProject
                     }
                 }
                 ///////////////////
+                ///
 
+                //\/\/\/\/\/\/
                 meshTree = new Grasshopper.DataTree<Mesh>();
-                for (int i = 0; i < k; i++)
+                for (int i = 0; i < clusterGroup.hClusters.Count; i++)
                 {
                     GH_Path pth = new GH_Path(i);
-                    int length = clusterGroup.centroids[i].assignedInputs.Count;
 
-                    meshTree.AddRange(clusterGroup.centroids[i].assignedMeshes,pth);
+                    meshTree.AddRange(clusterGroup.hClusters[i].assignedMeshes, pth);
 
                 }
-                
+
             }
         }
 
@@ -182,14 +184,14 @@ namespace MorphoProject
             get
             {
                 // You can add image files to your project resources and access them like this:
-                return null;
+                
                 return Resources.Image1;               
             }
         }
 
         public override Guid ComponentGuid
         {
-            get { return new Guid("82785197-afcc-4cca-9cd7-3c9ac4bb1059"); }
+            get { return new Guid("82785197-afcc-4cca-9cd7-3c9ac4bb1061"); }
         }
     }
 }
