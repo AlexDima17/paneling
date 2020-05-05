@@ -11,14 +11,14 @@ namespace MorphoProject
     class HClusterGroup
     {
         public int N;
-        quadPanel[] inputs;
+        //quadPanel[] inputs;
         public List<HCluster> hClusters;
 
         public HClusterGroup(quadPanel[] inputs)
         {
             //initially set as many clusters as the inputs
             N = inputs.Length;
-            this.inputs = inputs;
+            //this.inputs = inputs;
             this.hClusters = new List<HCluster>();
 
             for (int i = 0; i < inputs.Length; i++)
@@ -38,51 +38,29 @@ namespace MorphoProject
                 hClusters[i].GetMean();
             }
 
-            for (int i = 0; i < hClusters.Count; i++)
+            int winnerA = -1;
+            int winnerB = -1;
+            double minDistance = double.MaxValue;
+            for (int i = 0; i < hClusters.Count-1; i++)
             {
-                int win = -1;
-                double minD = double.MaxValue;
-
-                for (int j = i + 1; j < hClusters.Count; j++)
+                for (int j = i+1; j < hClusters.Count; j++)
                 {
-                    //find distance between 2 cluster means
                     double d = distance(hClusters[i], hClusters[j]);
-                    if (d < minD)
+                    if (d < minDistance)
                     {
-                        minD = d;
-                        win = j;
-                        var a = 1;
-                    }
-                }
- 
-                //I need this if,dont know why...
-                if (win != -1)
-                {
-                    HCluster[] pair = new HCluster[2] { hClusters[i], hClusters[win] };
-                    if (!dissimilarities.ContainsKey(minD))
-                    {
-                        dissimilarities.Add(minD, pair);
-                        minDistances.Add(minD);
+                        minDistance = d;
+                        winnerA = i;
+                        winnerB = j;
+                        
                     }
                 }
 
             }
 
-            double minDist = double.MaxValue;
-            var winPair = new HCluster[2];
+            hClusters[winnerA].AddInputs(hClusters[winnerB]);
+            hClusters.Remove(hClusters[winnerB]);
 
-
-            foreach (KeyValuePair<double, HCluster[]> keyValuePair in dissimilarities)
-            {
-                if (keyValuePair.Key < minDist)
-                {
-                    winPair = keyValuePair.Value;
-                }
-            }
-
-
-            winPair[0].assignedInputs.AddRange(winPair[1].assignedInputs);
-            hClusters.Remove(winPair[1]);
+     
             N--;
         }
 
@@ -99,7 +77,13 @@ namespace MorphoProject
             //}
 
             //return Math.Sqrt(d);
-          
+
+            double dist= Math.Pow(clusterA.meanVector.X - clusterB.meanVector.X, 2)
+            + Math.Pow(clusterA.meanVector.Y - clusterB.meanVector.Y, 2)
+            + Math.Pow(clusterA.meanVector.Z - clusterB.meanVector.Z, 2);
+
+           // return (Math.Sqrt(dist));
+
             return d;
         }
     }

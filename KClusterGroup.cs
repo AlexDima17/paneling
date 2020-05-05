@@ -91,18 +91,18 @@ namespace MorphoProject
         {
             //euclidean distance between centroid weights and input weights
 
-            double d = 0.0;
+            //double d = 0.0;
 
-            for (int i = 0; i < cluster.centroidWeights.Length; i++)
-            {
-                d += Math.Pow(cluster.centroidWeights[i] - input.weights[i], 2);
-            }
+            //for (int i = 0; i < cluster.centroidWeights.Length; i++)
+            //{
+            //    d += Math.Pow(cluster.centroidWeights[i] - input.weights[i], 2);
+            //}
 
 
-            //double d = Math.Pow(cluster.centroidVec.X - input.weight, 2);
-            //+ Math.Pow(cluster.curvatureVec.Y - input.color.G, 2)
-            //+ Math.Pow(cluster.curvatureVec.Z - input.color.B, 2);
-           
+            double d = Math.Pow(cluster.weightVector.X- input.weights[0], 2)
+            +Math.Pow(cluster.weightVector.Y - input.weights[1], 2)
+            + Math.Pow(cluster.weightVector.Z - input.weights[2], 2);
+
             return Math.Sqrt(d);
         }
 

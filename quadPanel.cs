@@ -18,7 +18,7 @@ namespace MorphoProject
         {
             this.pts = pts;
             mesh = CreatePanel();
-            weights = new double[4];
+            weights = new double[3];
 
             ComputeWeights();
             //  curvature = 2;
@@ -27,7 +27,7 @@ namespace MorphoProject
         public quadPanel(Mesh mesh)
         {
             this.mesh = mesh;
-            weights = new double[4];
+            weights = new double[3];
             ComputeWeights();
             //   curvature = 2;
         }
@@ -78,9 +78,8 @@ namespace MorphoProject
 
             //set weights
             weights[0] = Math.Abs((angle - 2 * Math.PI) * 360 / (2 * Math.PI)); //gaussian curvature          
-            weights[1] = vec1.Length; //dimension 1
-            weights[2] = vec2.Length; //dimension 2
-            weights[3] = Vector3d.Subtract(vec1, vec2).Length; //one of the diagonals
+            weights[1] = vec1.Length/ vec2.Length; //dimension 1/dimension 2           
+            weights[2] = Vector3d.Subtract(vec1, vec2).Length; //one of the diagonals
 
         }
 

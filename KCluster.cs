@@ -13,17 +13,19 @@ namespace MorphoProject
         public List<quadPanel> assignedInputs;
         public List<Point3d> assignedPts;
         public List<Mesh> assignedMeshes;
-        public Vector3d centroidVec;
         public double[] centroidWeights;
+        public Vector3d weightVector;
+
 
         public KCluster(quadPanel centroid)
         {
             this.centroid = centroid;
-            centroidVec = new Vector3d(centroid.weights[0], 0, 0);
             assignedInputs = new List<quadPanel>();
             assignedPts = new List<Point3d>();
             assignedMeshes = new List<Mesh>();
             centroidWeights = centroid.weights;
+            weightVector = new Vector3d(centroid.weights[0], centroid.weights[1], centroid.weights[2]);
+
         }
 
         public void MeanVector()
@@ -52,7 +54,7 @@ namespace MorphoProject
             }
 
             value /= assignedInputs.Count;
-            centroidVec = new Vector3d(value, 0, 0);
+            weightVector = new Vector3d(centroidWeights[0], centroidWeights[1], centroidWeights[2]);
         }
 
     }

@@ -14,6 +14,7 @@ namespace MorphoProject
         public List<HCluster> subClusters;
         public List<quadPanel> assignedInputs;
         public List<Mesh> assignedMeshes;
+        public Vector3d meanVector;
 
         public double mean;
         public double[] clusterWeights;
@@ -30,22 +31,38 @@ namespace MorphoProject
             {
                 this
             };
+
+            meanVector = new Vector3d(0, 0, 0);
+        }
+
+        public void AddInputs(HCluster clusterToMerge)
+        {
+            assignedInputs.AddRange(clusterToMerge.assignedInputs);
+            assignedMeshes.AddRange(clusterToMerge.assignedMeshes);
         }
 
         public void GetMean()
         {
             double value = 0.0;
+            meanVector = new Vector3d(0, 0, 0);
 
             for (int i = 0; i < assignedInputs.Count; i++)
             {
                 for (int j = 0; j < assignedInputs[i].weights.Length; j++)
                 {
                     value += assignedInputs[i].weights[j];
-                }
+                    //meanVector.X += assignedInputs[i].weights[0];
+                    //meanVector.Y += assignedInputs[i].weights[1];
+                    //meanVector.Z += assignedInputs[i].weights[2];
 
+                }
+               
                 value /= assignedInputs[i].weights.Length;
             }
 
+            //meanVector.X /= assignedInputs.Count;
+            //meanVector.Y /= assignedInputs.Count;
+            //meanVector.Z /= assignedInputs.Count;
             mean = value / assignedInputs.Count;
         }
 
