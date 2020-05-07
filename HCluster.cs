@@ -51,19 +51,26 @@ namespace MorphoProject
                 for (int j = 0; j < assignedInputs[i].weights.Length; j++)
                 {
                     value += assignedInputs[i].weights[j];
-                    //meanVector.X += assignedInputs[i].weights[0];
-                    //meanVector.Y += assignedInputs[i].weights[1];
-                    //meanVector.Z += assignedInputs[i].weights[2];
+                    meanVector.X += assignedInputs[i].weights[0];
+                    meanVector.Y += assignedInputs[i].weights[1];
+                    meanVector.Z += assignedInputs[i].weights[2];
 
                 }
                
                 value /= assignedInputs[i].weights.Length;
             }
 
-            //meanVector.X /= assignedInputs.Count;
-            //meanVector.Y /= assignedInputs.Count;
-            //meanVector.Z /= assignedInputs.Count;
+            meanVector.X /= assignedInputs.Count;
+            meanVector.Y /= assignedInputs.Count;
+            meanVector.Z /= assignedInputs.Count;
             mean = value / assignedInputs.Count;
+        }
+
+        internal void GetNewMean(HCluster hCluster)
+        {
+            meanVector = new Vector3d((meanVector.X + hCluster.meanVector.X) / 2,
+                (meanVector.Y + hCluster.meanVector.Y) / 2,
+                (meanVector.Z + hCluster.meanVector.Z) / 2);
         }
 
         //public void GetMean()

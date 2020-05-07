@@ -67,7 +67,7 @@ namespace MorphoProject
             if (timer == null)
             {
                 timer = new Timer();
-                timer.Interval = 500;
+                timer.Interval = 1000;
                 timer.Tick += UpdateSolution;
             }
 
@@ -139,7 +139,7 @@ namespace MorphoProject
             played++;
             counter++;
 
-            if (counter == maxCounter)
+            if (counter == maxCounter || clusterGroup.N==k)
             {
                 //////////////////////
                 myTree.Clear();

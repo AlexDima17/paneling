@@ -57,10 +57,9 @@ namespace MorphoProject
 
             }
 
+            hClusters[winnerA].GetNewMean(hClusters[winnerB]);
             hClusters[winnerA].AddInputs(hClusters[winnerB]);
-            hClusters.Remove(hClusters[winnerB]);
-
-     
+            hClusters.Remove(hClusters[winnerB]);     
             N--;
         }
 
