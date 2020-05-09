@@ -81,7 +81,7 @@ namespace MorphoProject
             + Math.Pow(clusterA.meanVector.Y - clusterB.meanVector.Y, 2)
             + Math.Pow(clusterA.meanVector.Z - clusterB.meanVector.Z, 2);
 
-           // return (Math.Sqrt(dist));
+            return (Math.Sqrt(dist));
 
             return d;
         }

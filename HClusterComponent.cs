@@ -81,7 +81,7 @@ namespace MorphoProject
             {  
                 Start();
             }
-            else if (!run || timer.Enabled && maxCounter != 0 && counter >= maxCounter)
+            else if (!run || timer.Enabled && maxCounter != 0 && counter >= maxCounter ||clusterGroup.N==k)
             {
                 Stop();
             }
