@@ -12,7 +12,7 @@ namespace MorphoProject
     {
         Point3d[] pts;
         public Mesh mesh;
-        public double[] weights; //weights will be curvature, the dimensions and the diagonal of the panel
+        public double[] weights; //weights will be curvature, the dimensions ratio and the diagonal of the panel
 
         public quadPanel(Point3d[] pts)
         {

@@ -15,7 +15,6 @@ namespace MorphoProject
 {
     public class MeshRationalizer : GH_Component
     {
-       
         public MeshRationalizer()
           : base("RationalizeMesh", "MRational",
               "Construct an Archimedean, or arithmetic, spiral given its radii and number of turns.",

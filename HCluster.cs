@@ -51,7 +51,7 @@ namespace MorphoProject
                 for (int j = 0; j < assignedInputs[i].weights.Length; j++)
                 {
                     value += assignedInputs[i].weights[j];
-                    meanVector.X += assignedInputs[i].weights[0];
+                    meanVector.X += 1.2*assignedInputs[i].weights[0];
                     meanVector.Y += assignedInputs[i].weights[1];
                     meanVector.Z += assignedInputs[i].weights[2];
 

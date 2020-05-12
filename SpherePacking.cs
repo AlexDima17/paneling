@@ -72,7 +72,7 @@ namespace MorphoProject
 
         private List<PolylineCurve> SphIntersections(List<PolylineCurve> previousRow)
         {
-            //this method receives the previews row of sphere inteersections
+            //this method receives the previous row of sphere inteersections
             //finds intersection points between the curves and sets a next row of spheres
             List<PolylineCurve> sphIntersections = new List<PolylineCurve>();
             List<Point3d> subCenters = new List<Point3d>();

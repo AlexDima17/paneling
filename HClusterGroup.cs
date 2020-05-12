@@ -54,7 +54,6 @@ namespace MorphoProject
                         
                     }
                 }
-
             }
 
             hClusters[winnerA].GetNewMean(hClusters[winnerB]);
@@ -67,23 +66,12 @@ namespace MorphoProject
 
         public static double distance(HCluster clusterA, HCluster clusterB)
         {
-
-            double d = Math.Abs(clusterA.mean - clusterB.mean);
-
-            //for (int i = 0; i < clusterA.clusterWeights.Length; i++)
-            //{
-            //    d += Math.Pow(clusterA.mean - clusterB.mean, 2);
-            //}
-
-            //return Math.Sqrt(d);
-
             double dist= Math.Pow(clusterA.meanVector.X - clusterB.meanVector.X, 2)
             + Math.Pow(clusterA.meanVector.Y - clusterB.meanVector.Y, 2)
             + Math.Pow(clusterA.meanVector.Z - clusterB.meanVector.Z, 2);
 
             return (Math.Sqrt(dist));
 
-            return d;
         }
     }
 }
