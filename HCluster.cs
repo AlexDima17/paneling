@@ -10,14 +10,11 @@ namespace MorphoProject
 {
     class HCluster
     {
-        public quadPanel initQuad;
-        public List<HCluster> subClusters;
-        public List<quadPanel> assignedInputs;
-        public List<Mesh> assignedMeshes;
-        public Vector3d meanVector;
-
-        public double mean;
-        public double[] clusterWeights;
+        public quadPanel initQuad;                 //first panel of cluster
+        public List<quadPanel> assignedInputs;     //input panels that will be clustered
+        public List<Mesh> assignedMeshes;          //meshes of panels for display
+        public Vector3d meanVector;                //centroid vector of cluster
+        public double[] clusterWeights;            //array of 3 weights
 
         public HCluster(quadPanel qP)
         {            
@@ -25,17 +22,11 @@ namespace MorphoProject
             assignedInputs = new List<quadPanel>() { initQuad };
             assignedMeshes = new List<Mesh>() { initQuad.mesh };
             clusterWeights = initQuad.weights;
-          //  GetMean();
-
-            subClusters = new List<HCluster>
-            {
-                this
-            };
-
             meanVector = new Vector3d(0, 0, 0);
         }
 
-        public void AddInputs(HCluster clusterToMerge)
+        //method used when adding inputs of one cluster to another, to merge them
+        public void AddInputs(HCluster clusterToMerge)            
         {
             assignedInputs.AddRange(clusterToMerge.assignedInputs);
             assignedMeshes.AddRange(clusterToMerge.assignedMeshes);
@@ -43,51 +34,32 @@ namespace MorphoProject
 
         public void GetMean()
         {
-            double value = 0.0;
+            //find mean vector from the inputs values
             meanVector = new Vector3d(0, 0, 0);
 
             for (int i = 0; i < assignedInputs.Count; i++)
             {
                 for (int j = 0; j < assignedInputs[i].weights.Length; j++)
                 {
-                    value += assignedInputs[i].weights[j];
-                    meanVector.X += 1.2*assignedInputs[i].weights[0];
+                    meanVector.X += assignedInputs[i].weights[0];
                     meanVector.Y += assignedInputs[i].weights[1];
                     meanVector.Z += assignedInputs[i].weights[2];
-
                 }
                
-                value /= assignedInputs[i].weights.Length;
             }
 
             meanVector.X /= assignedInputs.Count;
             meanVector.Y /= assignedInputs.Count;
             meanVector.Z /= assignedInputs.Count;
-            mean = value / assignedInputs.Count;
         }
 
-        internal void GetNewMean(HCluster hCluster)
+        //when clusters are merged, find mean vector of the two before "destoying" the previous cluster
+        //no need to run through all inputs again
+        internal void UpdateMean(HCluster hCluster)
         {
             meanVector = new Vector3d((meanVector.X + hCluster.meanVector.X) / 2,
                 (meanVector.Y + hCluster.meanVector.Y) / 2,
                 (meanVector.Z + hCluster.meanVector.Z) / 2);
         }
-
-        //public void GetMean()
-        //{
-        //    double sum=0.0;
-
-        //    for (int i = 0; i < subClusters.Count; i++)
-        //    {
-        //        for (int j = 0; j < subClusters[i].clusterWeights.Length; j++)
-        //        {
-        //            sum += subClusters[i].clusterWeights[j];
-        //        }
-        //        sum /= subClusters[i].clusterWeights.Length;
-        //    }
-
-        //    mean= sum / subClusters.Count;
-        //}
-
     }
 }

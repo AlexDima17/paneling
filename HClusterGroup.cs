@@ -10,37 +10,34 @@ namespace MorphoProject
 {
     class HClusterGroup
     {
-        public int N;
-        //quadPanel[] inputs;
-        public List<HCluster> hClusters;
+        public int N;                           //target cluster number
+        public List<HCluster> hClusters;        //clusters
 
         public HClusterGroup(quadPanel[] inputs)
         {
             //initially set as many clusters as the inputs
             N = inputs.Length;
-            //this.inputs = inputs;
             this.hClusters = new List<HCluster>();
 
             for (int i = 0; i < inputs.Length; i++)
             {
                 hClusters.Add(new HCluster(inputs[i]));
             }
-        }
-
-
-        public void UpdateClusters()
-        {
-            List<double> minDistances = new List<double>();
-            Dictionary<double, HCluster[]> dissimilarities = new Dictionary<double, HCluster[]>();
 
             for (int i = 0; i < hClusters.Count; i++)
             {
                 hClusters[i].GetMean();
             }
+        }
 
+
+        public void UpdateClusters()
+        {    
+            //check all clusters in pairs, to find the pair with the minimum distance between them
             int winnerA = -1;
             int winnerB = -1;
             double minDistance = double.MaxValue;
+
             for (int i = 0; i < hClusters.Count-1; i++)
             {
                 for (int j = i+1; j < hClusters.Count; j++)
@@ -56,9 +53,12 @@ namespace MorphoProject
                 }
             }
 
-            hClusters[winnerA].GetNewMean(hClusters[winnerB]);
+            //move the inputs of one cluster to the other and update the cluster's mean vector
+            hClusters[winnerA].UpdateMean(hClusters[winnerB]);
             hClusters[winnerA].AddInputs(hClusters[winnerB]);
-            hClusters.Remove(hClusters[winnerB]);     
+            hClusters.Remove(hClusters[winnerB]);  
+            
+            //the number of clusters is reduced by 1
             N--;
         }
 
@@ -66,7 +66,7 @@ namespace MorphoProject
 
         public static double distance(HCluster clusterA, HCluster clusterB)
         {
-            double dist= Math.Pow(clusterA.meanVector.X - clusterB.meanVector.X, 2)
+            double dist = Math.Pow(clusterA.meanVector.X - clusterB.meanVector.X, 2)
             + Math.Pow(clusterA.meanVector.Y - clusterB.meanVector.Y, 2)
             + Math.Pow(clusterA.meanVector.Z - clusterB.meanVector.Z, 2);
 

@@ -17,7 +17,6 @@ namespace MorphoProject
         Timer timer;
         int counter;
         int maxCounter;
-        int interval;
         bool reset, run;
         List<Mesh> meshPanels = new List<Mesh>();
         int k = 1;
@@ -26,7 +25,6 @@ namespace MorphoProject
         quadPanel[] qPans; //the inputs
         KClusterGroup clusterGroup;
         Grasshopper.DataTree<Mesh> meshTree = new Grasshopper.DataTree<Mesh>();
-        Grasshopper.DataTree<int> myTree = new Grasshopper.DataTree<int>();
         List<double> curv=new List<double>();
         int iter = 0;
 
@@ -49,10 +47,8 @@ namespace MorphoProject
 
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            //  pManager.AddCurveParameter("Line", "ln", "intersection curve", GH_ParamAccess.item);
             pManager.AddIntegerParameter("count", "c", "intersection curves", GH_ParamAccess.item);
             pManager.AddMeshParameter("meshes", "mP", "mesh panels", GH_ParamAccess.tree);
-          
         }
 
 
@@ -140,19 +136,7 @@ namespace MorphoProject
 
             if (counter == maxCounter)
             {
-                //////////////////////
-                myTree.Clear();
-                for (int i = 0; i < k; i++)
-                {
-                    GH_Path pth = new GH_Path(i);
-
-                    for (int j = 0; j < 10; j++)
-                    {
-                        myTree.Add(j, pth);
-                    }
-                }
-                ///////////////////
-
+               
                 meshTree = new Grasshopper.DataTree<Mesh>();
                 for (int i = 0; i < k; i++)
                 {
@@ -161,8 +145,7 @@ namespace MorphoProject
 
                     meshTree.AddRange(clusterGroup.centroids[i].assignedMeshes,pth);
 
-                }
-                
+                }                
             }
         }
 
@@ -181,8 +164,6 @@ namespace MorphoProject
         {
             get
             {
-                // You can add image files to your project resources and access them like this:
-                
                 return Resources.Image1;               
             }
         }

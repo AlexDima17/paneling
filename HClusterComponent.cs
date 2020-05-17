@@ -25,9 +25,7 @@ namespace MorphoProject
         quadPanel[] qPans; //the inputs
         HClusterGroup clusterGroup;
         Grasshopper.DataTree<Mesh> meshTree = new Grasshopper.DataTree<Mesh>();
-        Grasshopper.DataTree<int> myTree = new Grasshopper.DataTree<int>();
         List<double> curv=new List<double>();
-        int iter = 0;
 
         public HClusterComponent()
           : base("ClusterPanelsHierachical", "HCluster", "Group input panels", "PanelizationTools", "PanelizationTools")
@@ -80,9 +78,10 @@ namespace MorphoProject
             if (run && !timer.Enabled)
             {  
                 Start();
-            }
+            }            
             else if (!run || timer.Enabled && maxCounter != 0 && counter >= maxCounter ||clusterGroup.N==k)
             {
+                //if it reaches the given number of clusters it has to stop
                 Stop();
             }
 
@@ -116,7 +115,6 @@ namespace MorphoProject
         {            
             played = -100;
             counter = 0;
-
             qPans = new quadPanel[meshPanels.Count];
             curv = new List<double>();
 
@@ -124,14 +122,10 @@ namespace MorphoProject
             {
                 quadPanel qPan = new quadPanel(meshPanels[i]);
                 qPans[i] = qPan;
-
                 curv.Add(qPan.weights[0]);
-
             }
 
             clusterGroup = new HClusterGroup(qPans);
-
-
         }
         public void Update()
         {   
@@ -141,21 +135,8 @@ namespace MorphoProject
 
             if (counter == maxCounter || clusterGroup.N==k)
             {
-                //////////////////////
-                myTree.Clear();
-                for (int i = 0; i < k; i++)
-                {
-                    GH_Path pth = new GH_Path(i);
+              
 
-                    for (int j = 0; j < 10; j++)
-                    {
-                        myTree.Add(j, pth);
-                    }
-                }
-                ///////////////////
-                ///
-
-                //\/\/\/\/\/\/
                 meshTree = new Grasshopper.DataTree<Mesh>();
                 for (int i = 0; i < clusterGroup.hClusters.Count; i++)
                 {
@@ -183,8 +164,6 @@ namespace MorphoProject
         {
             get
             {
-                // You can add image files to your project resources and access them like this:
-                
                 return Resources.Image1;               
             }
         }

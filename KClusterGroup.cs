@@ -9,9 +9,9 @@ namespace MorphoProject
 {
     class KClusterGroup
     {
-        public int K;
-        public KCluster[] centroids;
-        quadPanel[] inputs;
+        public int K;                        //number of clusters
+        public KCluster[] centroids;         //clusters
+        quadPanel[] inputs;                  //input panels
       
         public KClusterGroup(int K, quadPanel[] inputs)
         {
@@ -22,8 +22,6 @@ namespace MorphoProject
            
             for (int i = 0; i < centroids.Length; i++)
             {
-                Point3d pt = new Point3d(1.0 * rnd.NextDouble(), 1.0 * rnd.NextDouble(), 0);
-
                 int randomIndex = rnd.Next(centroids.Length);
                 centroids[i] = new KCluster(inputs[randomIndex]);
             }
@@ -33,16 +31,7 @@ namespace MorphoProject
             AssignClusters();
         }
 
-        public List<quadPanel> DrawClusters()
-        {
-            List<quadPanel> pts = new List<quadPanel>();
-            for (int i = 0; i < centroids.Length; i++)
-            {
-                pts.Add(centroids[i].centroid);
-            }
-            return pts;
-        }
-
+      
         public void AssignClusters()
         {
             //clear the assigned inputs lists
@@ -50,8 +39,6 @@ namespace MorphoProject
             {
                 centroids[i].assignedInputs = new List<quadPanel>();
                 centroids[i].assignedMeshes = new List<Mesh>();
-
-                // centroids[i].assignedPts.Clear();
             }
 
             //find the best matching centroid for each input to be assigned to
@@ -90,15 +77,6 @@ namespace MorphoProject
         public double Distance(KCluster cluster, quadPanel input)
         {
             //euclidean distance between centroid weights and input weights
-
-            //double d = 0.0;
-
-            //for (int i = 0; i < cluster.centroidWeights.Length; i++)
-            //{
-            //    d += Math.Pow(cluster.centroidWeights[i] - input.weights[i], 2);
-            //}
-
-
             double d = Math.Pow(cluster.weightVector.X- input.weights[0], 2)
             +Math.Pow(cluster.weightVector.Y - input.weights[1], 2)
             + Math.Pow(cluster.weightVector.Z - input.weights[2], 2);

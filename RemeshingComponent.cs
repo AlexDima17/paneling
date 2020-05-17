@@ -6,10 +6,6 @@ using MorphoProject.Properties;
 using Rhino.Geometry;
 using Rhino.Geometry.Intersect;
 
-// In order to load the result of this wizard, you will also need to
-// add the output bin/ folder of this project to the list of loaded
-// folder in Grasshopper.
-// You can use the _GrasshopperDeveloperSettings Rhino command for that.
 
 namespace MorphoProject
 {
@@ -37,16 +33,14 @@ namespace MorphoProject
             pManager.AddCurveParameter("Line", "ln", "intersection curve", GH_ParamAccess.item);
             pManager.AddCurveParameter("intersections", "inters", "intersection curves", GH_ParamAccess.list);
             pManager.AddCurveParameter("intersectionsNext", "interNext", "intersection curves", GH_ParamAccess.list);
-            //pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
-            //pManager.AddPointParameter("intersectionspt", "intPt", "intersection curves", GH_ParamAccess.list);
             pManager.AddMeshParameter("mesh panels", "mPan", "mesh panels", GH_ParamAccess.list);
-            pManager.AddNumberParameter("curvatures", "curv", "panel curvature", GH_ParamAccess.list);
         }
 
 
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            double radius = 0.5;
+            //get all the inputs
+            double radius = 0.1;
             double startHeight = radius;
             Mesh inputMesh = new Mesh();
             Polyline intersectionLine;
@@ -61,6 +55,7 @@ namespace MorphoProject
             if (!DA.GetData(2, ref inputMesh)) return;
             if (!DA.GetData(3, ref reps)) return;
 
+            //make a sphere packing class
             SpherePacking sphPacking = new SpherePacking(radius, inputMesh, startHeight,reps);
 
             intersectionLine = sphPacking.path;
@@ -78,9 +73,9 @@ namespace MorphoProject
 
             }
 
-            for (int i = 0; i < sphPacking.groupsOfFive.Count; i++)
+            for (int i = 0; i < sphPacking.groupsOfFour.Count; i++)
             {
-                quadPanel qP = new quadPanel(sphPacking.groupsOfFive[i]);
+                quadPanel qP = new quadPanel(sphPacking.groupsOfFour[i]);
                 qPanels.Add(qP.mesh);
                 curvatures.Add(qP.weights[0]);
             }
@@ -89,10 +84,6 @@ namespace MorphoProject
             DA.SetDataList(1, sphInters);
             DA.SetDataList(2, allInter);        
             DA.SetDataList(3, qPanels);
-            DA.SetDataList(4, curvatures);
-
-            //DA.SetDataList(3, sphPacking.groupsOfFive[sphPacking.groupsOfFive.Count - 1]);
-            //DA.SetDataList(4, sphPacking.groupsOfFive[1]);
         }
 
 
@@ -105,7 +96,6 @@ namespace MorphoProject
         {
             get
             {
-                // You can add image files to your project resources and access them like this:
                 return Resources.icon1_01;
             }
         }
